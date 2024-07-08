@@ -1,0 +1,23 @@
+[
+  {
+    "name": "New York Public Library",
+    "address": "476 5th Ave",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10018"
+  },
+  {
+    "name": "Central Library",
+    "address": "630 W 5th St",
+    "city": "Los Angeles",
+    "state": "CA",
+    "zip": "90071"
+  },
+  {
+    "name": "Harold Washington Library",
+    "address": "400 S State St",
+    "city": "Chicago",
+    "state": "IL",
+    "zip": "60605"
+  }
+]
