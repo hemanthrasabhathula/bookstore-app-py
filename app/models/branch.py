@@ -8,10 +8,16 @@ class Branch:
 
     @staticmethod
     def get_all_branches():
-        branches = list(Branch.collection.find({}))
-        return dumps(branches)
+        return list(Branch.collection.find({}))
 
     @staticmethod
     def get_branch_by_id(branch_id):
-        branch = Branch.collection.find_one({"_id": ObjectId(branch_id)})
-        return dumps(branch)
+        return Branch.collection.find_one({"_id": ObjectId(branch_id)})
+
+    @staticmethod
+    def add_branch(branch):
+        return Branch.collection.insert_one(branch).inserted_id
+
+    @staticmethod
+    def del_branch_by_id(branch_id):
+        Branch.collection.delete_one({"_id": ObjectId(branch_id)})

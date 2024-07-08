@@ -7,3 +7,11 @@ def get_branches():
 
 def get_branch_by_id(branch_id):
     return Branch.get_branch_by_id(branch_id)
+
+
+def insert_branch(branch):
+    return Branch.add_branch(branch)
+
+
+def del_branch_by_id(branch_id):
+    Branch.del_branch_by_id(branch_id)

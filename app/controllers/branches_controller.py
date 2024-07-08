@@ -1,7 +1,9 @@
 from flask import Blueprint
-from app.services.branch_service import get_branch_by_id, get_branches
-from app.utils.response import success_response, error_response
+from app.services.branch_service import get_branch_by_id, get_branches, insert_branch, del_branch_by_id
+from app.utils.response import success_response, error_response, created_response, deleted_response
 from bson.json_util import dumps
+from flask import request
+from app.utils.helper import pop_id, push_id
 
 branches_bp = Blueprint('branches', __name__)
 
@@ -19,6 +21,26 @@ def get_all_branches():
 def get_branch(branch_id):
     try:
         branch = get_branch_by_id(branch_id)
+        print(branch)
         return success_response(data=branch, message='Branch retrieved successfully')
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to retrieve branch')
+
+
+@branches_bp.route('/branch', methods=['POST'])
+def add_branch():
+    try:
+        branch = pop_id(request.get_json())
+        _id = insert_branch(branch)
+        return created_response(message='Branch added successfully', data=push_id(request.get_json(), _id))
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to add branch')
+
+
+@branches_bp.route('/branch/<branch_id>', methods=['DELETE'])
+def delete_branch(branch_id):
+    try:
+        branch = del_branch_by_id(branch_id)
+        return deleted_response(message='Branch deleted successfully')
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to delete branch')

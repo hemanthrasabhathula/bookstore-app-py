@@ -8,10 +8,8 @@ class Book:
 
     @staticmethod
     def get_all_books():
-        books = list(Book.collection.find({}))
-        return dumps(books)
+        return list(Book.collection.find({}))
 
     @staticmethod
     def get_book_by_id(book_id):
-        book = Book.collection.find_one({"_id":  ObjectId(book_id)})
-        return dumps(book)
+        return Book.collection.find_one({"_id":  ObjectId(book_id)})
