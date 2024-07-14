@@ -35,7 +35,9 @@ def add_branch():
     try:
         branch = pop_id(request.get_json())
         _id = insert_branch(branch)
-        return created_response(message='Branch added successfully', data=push_id(request.get_json(), _id))
+        if (branch["_id"] == None):
+            return error_response(message='Failed to add branch')
+        return created_response(message='Branch added successfully', data=branch)
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to add branch')
 

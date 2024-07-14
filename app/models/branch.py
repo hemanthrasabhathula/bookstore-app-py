@@ -20,4 +20,4 @@ class Branch:
 
     @staticmethod
     def del_branch_by_id(branch_id):
-        Branch.collection.delete_one({"_id": ObjectId(branch_id)})
+        return Branch.collection.delete_one({"_id": ObjectId(branch_id)}).deleted_count

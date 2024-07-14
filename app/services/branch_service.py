@@ -14,4 +14,4 @@ def insert_branch(branch):
 
 
 def del_branch_by_id(branch_id):
-    Branch.del_branch_by_id(branch_id)
+    return Branch.del_branch_by_id(branch_id)
