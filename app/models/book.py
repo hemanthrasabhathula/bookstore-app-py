@@ -13,3 +13,11 @@ class Book:
     @staticmethod
     def get_book_by_id(book_id):
         return Book.collection.find_one({"_id":  ObjectId(book_id)})
+
+    @staticmethod
+    def insert_book(book):
+        return Book.collection.insert_one(book).inserted_id
+
+    @staticmethod
+    def delete_book_by_id(book_id):
+        return Book.collection.delete_one({"_id": ObjectId(book_id)}).deleted_count

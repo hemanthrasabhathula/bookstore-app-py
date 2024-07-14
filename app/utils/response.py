@@ -4,24 +4,19 @@ from bson.json_util import dumps
 from flask import jsonify
 
 
-def success_response(message, data):
+def success_response(message, data=None):
 
     return Response(response=convert_response(message, data), status=200, headers={'message': message}, mimetype='application/json')
 
 
-def error_response(message, data):
+def error_response(message, data=None):
 
     return Response(response=convert_response(message, data), status=400, headers={'message': message}, mimetype='application/json')
 
 
-def created_response(message, data):
+def created_response(message, data=None):
 
     return Response(response=convert_response(message, data), status=201, headers={'message': message}, mimetype='application/json')
-
-
-def deleted_response(message):
-
-    return Response(response=convert_response(message), status=200, headers={'message': message}, mimetype='application/json')
 
 
 def convert_response(message, data=None):
