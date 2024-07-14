@@ -38,17 +38,19 @@ def add_copy():
         data = copy.deepcopy(request_data)
         book_data = pop(request_data, 'branchCopy')
         book_id = add_new_book(book_data)
-        if (book_id == None):
+        if (book_data["_id"] == None):
             return error_response(message='Failed to add book')
         else:
             copies_data = []
             branch_copies = data['branchCopy']
             print(branch_copies)
             for branch_copy in branch_copies:
-                for i in range(int(branch_copy['copies'])):
+                for i in range(branch_copy['copies']):
                     copy_data = {
                         'bookId': ObjectId(book_id),
-                        'branchId': ObjectId(branch_copy['branch']),
+                        'bookName': book_data['title'],
+                        'branchId': ObjectId(branch_copy['branchId']),
+                        'branchName': branch_copy['branchName'],
                         'status': 'available'
                     }
                     copies_data.append(copy_data)
