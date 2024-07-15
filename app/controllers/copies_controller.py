@@ -2,7 +2,7 @@ from flask import Blueprint
 from bson.json_util import dumps
 from flask import request
 from app.utils.helper import pop_id, push_id, pop
-from app.services.copy_service import get_all_copies, get_copy_by_id, add_copies
+from app.services.copy_service import get_all_copies, get_copy_by_id, add_copies, get_available_copies_service
 from app.services.book_service import add_new_book
 from app.utils.response import success_response, error_response, created_response
 from bson.objectid import ObjectId
@@ -61,3 +61,18 @@ def add_copy():
                 return error_response(message='Failed to add copies')
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to add copies')
+
+
+@copies_bp.route('/copies/available', methods=['POST'])
+def get_available_copies():
+    try:
+        request_data = request.get_json()
+        book_id = request_data['bookId']
+        branch_id = request_data['branchId']
+        copies = get_available_copies_service(book_id, branch_id)
+        if (copies == None):
+            return error_response(message='Failed to retrieve copies')
+        else:
+            return success_response(data=copies, message='Copies retrieved successfully')
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to retrieve copies')
