@@ -3,7 +3,7 @@ from app.services.copy_service import add_copies, get_copy_by_id, get_all_copies
 from app.models.copy import Copy
 from flask import Blueprint, request
 from app.services.transaction_service import get_all_transactions, get_all_user_transactions, add_transactions
-from app.utils.response import success_response, error_response
+from app.utils.response import success_response, error_response, created_response
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 
@@ -69,6 +69,6 @@ def add_transaction():
                 else:
                     return error_response(message='Failed to borrow books')
 
-        return success_response(message='Books borrowed successfully')
+        return created_response(message='Books borrowed successfully')
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to borrow books')
