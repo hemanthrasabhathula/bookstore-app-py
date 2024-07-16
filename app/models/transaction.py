@@ -15,5 +15,16 @@ class Transaction:
         return list(Transaction.collection.find({"userId": user_id}))
 
     @staticmethod
+    def get_copy_transactions(copy_id):
+        return Transaction.collection.find_one({'copyId': copy_id})
+
+    def get_copy_transactions_by_status(copy_id, status):
+        return Transaction.collection.find_one({'copyId': copy_id, 'status': status})
+
+    @staticmethod
     def add_transactions(transactions):
         return Transaction.collection.insert_many(transactions)
+
+    @staticmethod
+    def update_transaction(transaction_id, data):
+        return Transaction.collection.update_one({"_id": transaction_id}, {"$set": data})
