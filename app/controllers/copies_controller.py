@@ -3,7 +3,7 @@ from bson.json_util import dumps
 from flask import request
 from app.utils.helper import pop_id, push_id, pop
 from app.services.copy_service import get_all_copies, get_copy_by_id, add_copies, get_available_copies_service
-from app.services.book_service import add_new_book
+from app.services.book_service import add_new_book, get_book_by_details_service
 from app.utils.response import success_response, error_response, created_response
 from bson.objectid import ObjectId
 import copy
@@ -36,8 +36,15 @@ def add_copy():
     try:
         request_data = request.get_json()
         data = copy.deepcopy(request_data)
-        book_data = pop(request_data, 'branchCopy')
-        book_id = add_new_book(book_data)
+        book_data = None
+        if ('title' in request_data and 'ISBN' in request_data):
+            book_data = get_book_by_details_service(
+                {'title': request_data['title'], 'ISBN': request_data['ISBN']})
+
+        if (book_data == None):
+            book_data = pop(request_data, 'branchCopy')
+            book_id = add_new_book(book_data)
+
         if (book_data["_id"] == None):
             return error_response(message='Failed to add book')
         else:
@@ -47,7 +54,7 @@ def add_copy():
             for branch_copy in branch_copies:
                 for i in range(branch_copy['copies']):
                     copy_data = {
-                        'bookId': ObjectId(book_id),
+                        'bookId': book_data['_id'],
                         'bookName': book_data['title'],
                         'branchId': ObjectId(branch_copy['branchId']),
                         'branchName': branch_copy['branchName'],

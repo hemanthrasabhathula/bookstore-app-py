@@ -1,6 +1,6 @@
 from app.utils.helper import pop_id, push_id
 from flask import Blueprint
-from app.services.book_service import get_books, get_book_by_id, add_new_book, del_book_by_id
+from app.services.book_service import get_books, get_book_by_id, add_new_book, del_book_by_id, get_book_by_title_service, get_book_by_title_pattern_service, get_book_by_details_service
 from app.utils.response import success_response, error_response
 from bson.json_util import dumps
 from flask import request
@@ -24,6 +24,48 @@ def get_book(book_id):
             return error_response(message='Book not found')
         else:
             return success_response(data=book, message='Book retrieved successfully')
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to retrieve book')
+
+
+@books_bp.route('/books/bookbytitle/<title>', methods=['GET'])
+def get_book_by_title(title):
+    try:
+        book = get_book_by_title_service(title)
+        if (book == None):
+            return error_response(message='Book not found')
+        else:
+            return success_response(data=book, message='Book retrieved successfully')
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to retrieve book')
+
+
+@books_bp.route('/books/bookbytitlepattern/<title_pattern>', methods=['GET'])
+def get_book_by_title_pattern(title_pattern):
+    try:
+        books = get_book_by_title_pattern_service(title_pattern)
+        if (books == None):
+            return error_response(message='Book not found')
+        else:
+            return success_response(data=books, message='Book retrieved successfully')
+    except Exception as e:
+        return error_response(data=dumps(str(e)), message='Failed to retrieve book')
+
+
+@books_bp.route('/books/bookbydetails', methods=['POST'])
+def get_book_by_details():
+    try:
+        request_data = request.get_json()
+        book_data = {}
+        if 'title' in request_data and 'ISBN' in request_data:
+            book_data = get_book_by_details_service(request_data)
+        else:
+            return error_response(message='request details are not found')
+
+        if (book_data == None):
+            return error_response(message='Book not found')
+        else:
+            return success_response(data=book_data, message='Book retrieved successfully')
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to retrieve book')
 

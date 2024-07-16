@@ -70,5 +70,14 @@
     "published": 2006,
     "pages": 287,
     "image": "https://images-na.ssl-images-amazon.com/images/I/81GAb1QJQQL.jpg"
+  },
+  {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "ISBN": "978-1503290563",
+    "genre": "Romance",
+    "published": 1813,
+    "pages": 279,
+    "image": "https://images-na.ssl-images-amazon.com/images/I/91eKRbuhgaL._SL1500_.jpg"
   }
 ]
