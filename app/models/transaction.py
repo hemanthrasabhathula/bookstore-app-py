@@ -1,6 +1,7 @@
 from app.utils.database import db
 from bson.json_util import dumps
 from bson.objectid import ObjectId
+from pymongo import DESCENDING
 
 
 class Transaction:
@@ -8,7 +9,7 @@ class Transaction:
 
     @staticmethod
     def get_all_transactions():
-        return list(Transaction.collection.find({}))
+        return list(Transaction.collection.find({}).sort('borrowedDate', DESCENDING))
 
     @staticmethod
     def get_all_user_transactions(user_id):
