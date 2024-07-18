@@ -9,9 +9,9 @@ def success_response(message, data=None):
     return Response(response=convert_response(message, data), status=200, headers={'message': message}, mimetype='application/json')
 
 
-def error_response(message, data=None):
+def error_response(message, data=None, status=400):
 
-    return Response(response=convert_response(message, data), status=400, headers={'message': message}, mimetype='application/json')
+    return Response(response=convert_response(message, data), status=status, headers={'message': message}, mimetype='application/json')
 
 
 def created_response(message, data=None):
