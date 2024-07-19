@@ -4,9 +4,9 @@ from bson.json_util import dumps
 from flask import jsonify
 
 
-def success_response(message, data=None):
+def success_response(message, data=None, status=200):
 
-    return Response(response=convert_response(message, data), status=200, headers={'message': message}, mimetype='application/json')
+    return Response(response=convert_response(message, data), status=status, headers={'message': message}, mimetype='application/json')
 
 
 def error_response(message, data=None, status=400):
