@@ -13,7 +13,7 @@ class Transaction:
 
     @staticmethod
     def get_all_user_transactions(user_id):
-        return list(Transaction.collection.find({"userId": ObjectId(user_id)}))
+        return list(Transaction.collection.find({"userId": ObjectId(user_id)}).sort('borrowedDate', DESCENDING))
 
     @staticmethod
     def get_copy_transactions(copy_id):
