@@ -44,7 +44,13 @@ def get_transactions_by_copy_id(copy_id):
 def add_transaction():
     try:
         data = request.get_json()
-        for entry in data:
+        if ('user' not in data or 'cartdata' not in data):
+            return error_response(message='Invalid request data')
+
+        user_data = data['user']
+        cart_data = data['cartdata']
+
+        for entry in cart_data:
             book_id = entry['book']['_id']['$oid']
             book_title = entry['book']['title']
             book_author = entry['book']['author']
@@ -60,6 +66,7 @@ def add_transaction():
 
                 for copy in copies_to_borrow:
                     copy_id = copy['_id']
+                    user_id = user_data['_id']['$oid']
                     updated_copy(copy_id, {"status": "borrowed"})
                     transaction_record = {
                         'bookId': ObjectId(book_id),
@@ -67,6 +74,8 @@ def add_transaction():
                         'author': book_author,
                         'branchId': ObjectId(branch_id),
                         'branchName': branch_name,
+                        'userId': ObjectId(user_id),
+                        'userName': user_data['username'],
                         'copyId': copy_id,
                         'status': 'borrowed',
                         'borrowedDate': datetime.datetime.now(),
