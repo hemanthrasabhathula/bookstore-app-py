@@ -15,6 +15,14 @@ class Copy:
         return Copy.collection.find_one({"_id": ObjectId(copy_id)})
 
     @staticmethod
+    def get_copies_by_book_id(book_id):
+        return list(Copy.collection.find({"bookId": ObjectId(book_id)}))
+
+    @staticmethod
+    def get_borrowed_copies_by_book_id(book_id):
+        return list(Copy.collection.find({"bookId": ObjectId(book_id), "status": "borrowed"}))
+
+    @staticmethod
     def add_copies(copies):
         return Copy.collection.insert_many(copies).inserted_ids
 
@@ -29,3 +37,7 @@ class Copy:
     @staticmethod
     def update_copy(copy_id, data):
         return Copy.collection.update_one({"_id": copy_id}, {"$set": data})
+
+    @staticmethod
+    def delete_copies_by_book_id(book_id):
+        return Copy.collection.delete_many({"bookId": ObjectId(book_id), "status": "available"}).deleted_count

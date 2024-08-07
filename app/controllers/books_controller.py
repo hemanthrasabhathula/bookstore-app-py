@@ -1,6 +1,7 @@
 from app.utils.helper import pop_id, push_id
 from flask import Blueprint
 from app.services.book_service import get_books, get_book_by_id, add_new_book, del_book_by_id, get_book_by_title_service, get_book_by_title_pattern_service, get_book_by_details_service
+from app.services.copy_service import get_copies_by_book_id_service, get_borrowed_copies_by_book_id_service, get_available_copies_service, delete_copies_by_book_id_service
 from app.utils.response import success_response, error_response
 from bson.json_util import dumps
 from flask import request
@@ -70,7 +71,7 @@ def get_book_by_details():
         return error_response(data=dumps(str(e)), message='Failed to retrieve book')
 
 
-@ books_bp.route('/book', methods=['POST'])
+@books_bp.route('/book', methods=['POST'])
 def add_book():
     try:
         book = pop_id(request.get_json())
@@ -81,12 +82,25 @@ def add_book():
         return error_response(data=dumps(str(e)), message='Failed to add book')
 
 
-@ books_bp.route('/book/<book_id>', methods=['DELETE'])
+@books_bp.route('/book/<book_id>', methods=['DELETE'])
 def del_book(book_id):
     try:
-        if (del_book_by_id(book_id) == 1):
-            return success_response(message='Book deleted successfully')
+        if (get_book_by_id(book_id) == None):
+            return error_response(message='Book not found')
+        if (len(get_borrowed_copies_by_book_id_service(book_id)) > 0):
+            return error_response(message='Book has borrowed copies. this book cannot be deleted')
         else:
-            return error_response(message='Failed to delete book')
+            if (delete_copies_by_book_id_service(book_id) >= 1):
+                if (del_book_by_id(book_id) == 1):
+                    return success_response(message='Book deleted successfully')
+                else:
+                    return error_response(message='Failed to delete book')
+            else:
+                return error_response(message='Failed to delete book copies')
+
+        # if (del_book_by_id(book_id) == 1):
+        #     return success_response(message='Book deleted successfully')
+        # else:
+        #     return error_response(message='Failed to delete book')
     except Exception as e:
         return error_response(data=dumps(str(e)), message='Failed to delete book')
