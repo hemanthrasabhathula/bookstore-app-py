@@ -9,3 +9,6 @@ class Quote:
     @staticmethod
     def add_quote(quote):
         return Quote.collection.insert_one(quote).inserted_id
+
+    def get_quotes(book_id):
+        return list(Quote.collection.find(book_id))
