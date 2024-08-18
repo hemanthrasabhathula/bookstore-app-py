@@ -1,11 +1,12 @@
 For
-Book : The Little Prince
-Author: Antoine de Saint-Exupéry
+Book : The Hunger Games
+Author: Suzanne Collins
+
 
 1. Extract 10 notable quotes from the book.
 2. Ensure the quotes are ordered by ascending page number.
 3. Each quote should include the page and chapter number formatted as strings but containing numerical values.
-4. Ensure the page and chapter numbers follow a logical progression.
+4. Ensure the page and chapter numbers follow a logical progression and in order 
    [
    {
    "quote": "Sample quote from the book.",
