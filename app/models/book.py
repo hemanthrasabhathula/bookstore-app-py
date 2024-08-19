@@ -28,7 +28,8 @@ class Book:
 
     @staticmethod
     def insert_book(book):
-        return Book.collection.insert_one(book).inserted_id
+        return Book.collection.update_one({"title": book["title"]}, {"$set": book}, upsert=True)
+        # return Book.collection.insert_one(book).inserted_id
 
     @staticmethod
     def delete_book_by_id(book_id):
